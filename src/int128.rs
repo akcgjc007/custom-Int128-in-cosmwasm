@@ -1,39 +1,40 @@
 use std::ops::{AddAssign, SubAssign};
 
 pub struct Int128 {
-    magnitude: u128,
-    sign: bool,
+    mag: u128,
+    sin: bool,
 }
 
 impl Int128 {
     pub const fn as_i128(&self) -> i128 {
-        self.magnitude as i128 * if self.sign { -1 } else { 1 }
+        self.mag as i128 * if self.sin { -1 } else { 1 }
     }
     pub const fn zero() -> Self {
-        Int128 {
-            magnitude: 0,
-            sign: false,
-        }
+        Int128 { mag: 0, sin: false }
     }
 }
 impl AddAssign for Int128 {
     fn add_assign(&mut self, other: Self) {
-        if self.sign == other.sign {
+        if self.sin == other.sin {
             *self = Self {
-                magnitude: self.magnitude + other.magnitude,
-                sign: self.sign,
+                mag: self.mag + other.mag,
+                sin: self.sin,
             }
         } else {
             *self = Self {
-                magnitude: self.magnitude - other.magnitude,
-                sign: if self.sign {
-                    if other.magnitude >= self.magnitude {
+                mag: if self.mag >= other.mag {
+                    self.mag - other.mag
+                } else {
+                    other.mag - self.mag
+                },
+                sin: if self.sin {
+                    if other.mag >= self.mag {
                         false
                     } else {
                         true
                     }
                 } else {
-                    if self.magnitude >= other.magnitude {
+                    if self.mag >= other.mag {
                         false
                     } else {
                         true
@@ -46,7 +47,7 @@ impl AddAssign for Int128 {
 
 impl SubAssign for Int128 {
     fn sub_assign(&mut self, mut other: Self) {
-        other.sign = !other.sign;
+        other.sin = !other.sin;
         self.add_assign(other);
     }
 }
@@ -54,8 +55,8 @@ impl SubAssign for Int128 {
 impl From<i128> for Int128 {
     fn from(val: i128) -> Self {
         Int128 {
-            magnitude: val as u128,
-            sign: if val < 0 { true } else { false },
+            mag: val as u128,
+            sin: if val < 0 { true } else { false },
         }
     }
 }
