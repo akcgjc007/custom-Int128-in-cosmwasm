@@ -28,17 +28,9 @@ impl AddAssign for Int128 {
                     other.mag - self.mag
                 },
                 sin: if self.sin {
-                    if other.mag >= self.mag {
-                        false
-                    } else {
-                        true
-                    }
+                    other.mag < self.mag
                 } else {
-                    if self.mag >= other.mag {
-                        false
-                    } else {
-                        true
-                    }
+                    self.mag < other.mag
                 },
             }
         }
@@ -56,7 +48,7 @@ impl From<i128> for Int128 {
     fn from(val: i128) -> Self {
         Int128 {
             mag: val as u128,
-            sin: if val < 0 { true } else { false },
+            sin: val < 0,
         }
     }
 }
