@@ -1,0 +1,11 @@
+{
+  "name": "custom-int",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/akcgjc007/custom-Int128-in-cosmwasm.git",
+  "author": "akcgjc007 <akcgjc007@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "build:opt": "docker run --rm -v \"$(pwd)\":/code --mount type=volume,source=\"$(basename \"$(pwd)\")_cache\",target=/code/target --mount type=volume,source=registry_cache,target=/usr/local/cargo/registry cosmwasm/rust-optimizer:0.11.4"
+  }
+}
